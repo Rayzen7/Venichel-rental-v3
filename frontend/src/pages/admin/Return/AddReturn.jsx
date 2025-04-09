@@ -23,6 +23,7 @@ const AddReturn = () => {
     const [penalties_total, setPenaltiesTotal] = useState(0);
     const [rentTotal, setRentTotal] = useState(0);
     const [total, setTotal] = useState(0);
+    const [selectedRentId, setSelectedRentId] = useState('');
 
     useEffect(() => {
         const fetchData = async() => {
@@ -117,12 +118,14 @@ const AddReturn = () => {
                         <label className='font-poppins-medium text-[16px]'>Tenant :</label>
                         <select 
                             className='border-3 cursor-pointer border-black focus-within:border-primary h-[50px] outline-none rounded-md px-3 font-poppins-medium text-[14px]' 
-                            value={tenant} 
+                            value={selectedRentId} 
                             onChange={(e) => {
                                 const value = e.target.value;
-                                setTenant(value);
-
-                                const rentData = user.find((rents) => rents.tenant === parseInt(value));
+                                setSelectedRentId(value);
+                                
+                                const rentData = user.find((rents) => rents.id === parseInt(value));
+                                setTenant(rentData.tenant);
+                                
                                 setCar(rentData.no_car);
                                 setDateBorrow(rentData.date_borrow);
                                 setDateReturn(rentData.date_return);
@@ -131,7 +134,7 @@ const AddReturn = () => {
                         >
                             <option disabled value=''>Select Tenant</option>
                             {user.map((users, index) => (
-                                <option key={index} value={users.tenant}>{index + 1}. {users.user.name} | Down Payment {rupiahFormat(users.down_payment)}</option>
+                                <option key={index} value={users.id}>{index + 1}. {users.user.name} | Down Payment {rupiahFormat(users.down_payment)}</option>
                             ))}
                         </select>
                     </div>
